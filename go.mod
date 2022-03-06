@@ -1,3 +1,3 @@
-module booking-app
+module go-cli
 
 go 1.17
