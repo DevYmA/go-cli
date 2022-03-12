@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func main() {
 
@@ -14,7 +17,7 @@ func main() {
 
 	fmt.Printf("Welcome to %v 🌝 \n", applicationName)
 
-	for {
+	for givenGiftCount != allGiftCount {
 
 		var remainingGift uint = allGiftCount - givenGiftCount
 		fmt.Println("-------------------------------------------------------------")
@@ -27,6 +30,22 @@ func main() {
 		var lastName string
 		var email string
 		var age int
+
+		isValidFullName := len(firstName) > 4 && len(lastName) > 4
+		isValidEmail := strings.Contains(email, "@")
+
+		if !isValidFullName && !isValidEmail {
+			fmt.Println("Your input data is invalid, please try again")
+			continue
+		}
+
+		if age < 20 {
+			fmt.Println("Seems like your are adult 🧒 ")
+		} else {
+			fmt.Println("Seems like your are adult 🧑 ")
+			fmt.Print("Sorry, Your are not eligible for this giveaway")
+			break
+		}
 
 		fmt.Println("Please enter your First Name :")
 		fmt.Scan(&firstName)
@@ -49,4 +68,6 @@ func main() {
 		fmt.Printf("We have %v gift available right now. One of them are yours", remainingGift)
 		fmt.Printf("Gift Winners Emails %v \n ", winnerList)
 	}
+
+	fmt.Println("Currently all available gift are 0. Please join with us at next round ")
 }
