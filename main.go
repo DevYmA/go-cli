@@ -5,19 +5,24 @@ import (
 	"strings"
 )
 
+const messageCount int = 30
+
+var applicationName string = "Go CLI"
+var allGiftCount uint = 80
+var givenGiftCount uint = 10
+var winnerList []string
+
 func main() {
-
-	var applicationName string = "Go CLI"
-	const messageCount int = 30
-
-	var allGiftCount uint = 80
-	var givenGiftCount uint = 10
-
-	var winnerList []string
 
 	fmt.Printf("Welcome to %v 🌝 \n", applicationName)
 
 	for givenGiftCount != allGiftCount {
+
+		var firstName string
+		var lastName string
+		var email string
+		var age int
+		var region string
 
 		var remainingGift uint = allGiftCount - givenGiftCount
 		fmt.Println("-------------------------------------------------------------")
@@ -26,13 +31,22 @@ func main() {
 
 		fmt.Println("Before rollout to hand shake enter your details 🚀")
 
-		var firstName string
-		var lastName string
-		var email string
-		var age int
+		fmt.Println("Please enter your First Name :")
+		fmt.Scan(&firstName)
 
-		isValidFullName := len(firstName) > 4 && len(lastName) > 4
-		isValidEmail := strings.Contains(email, "@")
+		fmt.Println("Please enter your Last Name :")
+		fmt.Scan(&lastName)
+
+		fmt.Println("Please enter your Email :")
+		fmt.Scan(&email)
+
+		fmt.Println("Please enter your age :")
+		fmt.Scan(&age)
+
+		fmt.Println("Please enter your region :")
+		fmt.Scan(&region)
+
+		isValidFullName, isValidEmail := validateInputs(firstName, lastName, email)
 
 		if !isValidFullName && !isValidEmail {
 			fmt.Println("Your input data is invalid, please try again")
@@ -47,17 +61,8 @@ func main() {
 			break
 		}
 
-		fmt.Println("Please enter your First Name :")
-		fmt.Scan(&firstName)
-
-		fmt.Println("Please enter your Last Name :")
-		fmt.Scan(&lastName)
-
-		fmt.Println("Please enter your Email :")
-		fmt.Scan(&email)
-
-		fmt.Println("Please enter your age ")
-		fmt.Scan(&age)
+		regionalMsg := getRegionalGiftMessage(region)
+		fmt.Println(regionalMsg)
 
 		fmt.Println("Entered details are following ")
 		fmt.Printf("Your name is %v %v , email  %v and Your age is %v \n", firstName, lastName, email, age)
@@ -70,4 +75,28 @@ func main() {
 	}
 
 	fmt.Println("Currently all available gift are 0. Please join with us at next round ")
+}
+
+func getRegionalGiftMessage(region string) string {
+	message := ""
+
+	switch region {
+	case "Asia":
+		message = "We added asian culture gift to your pack"
+	case "Europe":
+		message = "We added Europe culture gift to your pack"
+	case "EME":
+		message = "We added EME culture gift to your pack"
+	default:
+
+		message = "Enterd region not eligible for culural gift"
+	}
+	return message
+}
+
+func validateInputs(firstName string, lastName string, email string) (bool, bool) {
+	isValidFullName := len(firstName) > 4 && len(lastName) > 4
+	isValidEmail := strings.Contains(email, "@")
+
+	return isValidFullName, isValidEmail
 }
