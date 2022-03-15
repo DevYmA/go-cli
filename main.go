@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"strings"
+	"go-cli/regional"
+	"strconv"
 )
 
 const messageCount int = 30
@@ -10,7 +11,7 @@ const messageCount int = 30
 var applicationName string = "Go CLI"
 var allGiftCount uint = 80
 var givenGiftCount uint = 10
-var winnerList []string
+var winnerList = make([]map[string]string, 0)
 
 func main() {
 
@@ -61,42 +62,25 @@ func main() {
 			break
 		}
 
-		regionalMsg := getRegionalGiftMessage(region)
+		regionalMsg := regional.GetRegionalGiftMessage(region)
 		fmt.Println(regionalMsg)
 
 		fmt.Println("Entered details are following ")
 		fmt.Printf("Your name is %v %v , email  %v and Your age is %v \n", firstName, lastName, email, age)
 
+		var userData = make(map[string]string)
+		userData["firstName"] = firstName
+		userData["lastName"] = lastName
+		userData["ëmail"] = email
+		userData["region"] = region
+		userData["age"] = strconv.FormatInt(int64(age), 10)
+
 		givenGiftCount = givenGiftCount + 1
-		winnerList = append(winnerList, email)
+		winnerList = append(winnerList, userData)
 
 		fmt.Printf("We have %v gift available right now. One of them are yours", remainingGift)
 		fmt.Printf("Gift Winners Emails %v \n ", winnerList)
 	}
 
 	fmt.Println("Currently all available gift are 0. Please join with us at next round ")
-}
-
-func getRegionalGiftMessage(region string) string {
-	message := ""
-
-	switch region {
-	case "Asia":
-		message = "We added asian culture gift to your pack"
-	case "Europe":
-		message = "We added Europe culture gift to your pack"
-	case "EME":
-		message = "We added EME culture gift to your pack"
-	default:
-
-		message = "Enterd region not eligible for culural gift"
-	}
-	return message
-}
-
-func validateInputs(firstName string, lastName string, email string) (bool, bool) {
-	isValidFullName := len(firstName) > 4 && len(lastName) > 4
-	isValidEmail := strings.Contains(email, "@")
-
-	return isValidFullName, isValidEmail
 }
